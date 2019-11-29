@@ -1,9 +1,157 @@
 <!DOCTYPE html>
+<!-- Detta är mitt första HTML-dokument -->
 <html lang="en">
     <head>
-        <title>DELI-VERY</title>
+        <title>TisBurgers</title>
+
+        <meta charset="utf-8"/>
+        <meta name="viewport" content="width=device-width, initial-scale=1">
+
+        <link rel="stylesheet" type="text/css" href="css/style.css">
+        <link rel="stylesheet" href="css/deli-very.css">
+
+        <script src="/socket.io/socket.io.js" defer></script>
+        <script src="js/deli-very.js" defer></script>
+        <script type="text/javascript" src="js/menu.js" defer></script>
+        <script src="js/js_script.js" defer></script>
+        <script src="https://vuejs.org/js/vue.js" defer></script>
+        <script src="js/vue_script.js" defer></script>
     </head>
+
     <body>
-        <h1>Hello World!!!</h1>
+      <header>
+        <section id="header">
+          <h1 id="welcome">Welcome to TisBurgers!</h1>
+          <img src="https://www.elsetge.cat/myimg/f/199-1998253_download-header-fries-before-guys-phone.png" alt="fries" id="fries">
+        </section>
+        <h3>Select Burger</h3>
+        <h5>This is where you select your burger</h5>
+      </header>
+      <main id="burgermenu">
+
+
+          <!--<table>
+            <thead id="burgernames">
+              <tr>
+                <th>The wierd burger</th>
+                <th>The wierder burger</th>
+                <th>The wierdest burger</th>
+              </tr>
+            </thead>
+            <tbody>
+              <tr align="center">
+                <td><img src="http://media2.giphy.com/media/3oriO4WnYwNTZLKv5K/giphy.gif" alt="Skum burgare" width="300"></td>
+                <td><img src="http://media1.giphy.com/media/l4q8eZbcBSSKyeNby/giphy.gif" alt="Skum burgare" width="300"></td>
+                <td><img src="https://i.pinimg.com/originals/6d/83/72/6d83726e1912296f4cc4b021ad5e2a37.jpg" alt="Skum burgare" width="300"></td>
+              </tr>
+              <tr id=contentofburgers>
+
+                <td>
+                  <dl>
+                    <dt><strong>Ingredients:</strong></dt>
+                    <dd>160 g beef, lettuce, tomato, carrot, bacon.</dd>
+                    <dt><strong>Product information:</strong></dt>
+                    <dd>Vegan, vegetarian.</dd>
+                    <dt><strong>Speciality:</strong></dt>
+                    <dd>Is alive</dd>
+                  </dl>
+                </td>
+
+                <td>
+                  <dl>
+                    <dt><strong>Ingredients:</strong></dt>
+                    <dd>160 g beef, sausage, pancakes, bacon.</dd>
+                    <dt><strong>Product information:</strong></dt>
+                    <dd>Can be your friend.</dd>
+                    <dt><strong>Speciality:</strong></dt>
+                    <dd>One jumpy dude.</dd>
+                  </dl>
+                </td>
+
+                <td>
+                  <dl>
+                    <dt><strong>Ingredients:</strong></dt>
+                    <dd>160 g beef, blue paint, cheese, lettuce.</dd>
+                    <dt><strong>Product information:</strong></dt>
+                    <dd>Low co2.</dd>
+                    <dt><strong>Speciality:</strong></dt>
+                    <dd>Marcus Löthman</dd>
+                  </dl>
+
+                </td>
+              </tr>
+            </tbody>
+
+          </table> -->
+          <div class="wrapper">
+                    <div v-for="burger in burgers">
+                        <div class="title">{{ burger.name }}</div>
+                        <img class="pic" v-bind:src='burger.image' width=250 height=190><br>
+                        <div class="content">
+                        <dl>
+                          <dt><b>Innehåll:</b></dt>
+                            <dd> {{burger.ingridients}}</dd>
+                            <dd> {{burger.kiloCalories}}</dd>
+                          <dt><b>Allergi:</b></dt>
+                            <dd><span v-if="burger.gluten">Gluten</span></dd>
+                            <dd><span v-if="burger.vegetarian">Vegatarian</span></dd>
+                        </dl>
+                      </div>
+                        <input type="checkbox" id="checkbox" v-model="chosenburger" v-bind:value="burger.name">Lägg till<br>
+                    </div>
+          </div>
+
+        <section id="contact">
+          <h3 id="contacttext">Customer information</h3>
+          <h5 id="contacttext">Provide the necessary information below for an easy delivery</h5>
+
+          <form class="" action="index.html" method="post">
+
+            <p>
+                <label for="fullname" id="contacttext">Full name</label><br>
+                <input type="text" id="fullname" name="fn" required="required" placeholder="Full name" v-model="fullname">
+            </p>
+            <p>
+                <label for="email" id="contacttext">E-mail address</label><br>
+                <input type="email" id="email" name="em" required="required" placeholder="E-mail address" v-model="mail">
+            </p>
+            <p>
+              <label for="payment" id="contacttext">Payment</label>
+              <select id="payment" name="p" v-model ="payment">
+                <option>Mastercard</option>
+                <option selected="selected">Visa</option>
+                <option>Cash</option>
+                <option>Gift card</option>
+              </select>
+            </p>
+
+            <input id="malebutton" type="radio" name="gender" value="male" v-model ="gender"> Male<br>
+            <input id="femalebutton" type="radio" name="gender" value="female" v-model ="gender"> Female<br>
+            <input id="otherbutton" type="radio" name="gender" value="other" v-model ="gender"> Other<br><br>
+
+          </form>
+          <p id="contacttext">Select your location of delivery:</p>
+
+          <div class="view-box">
+            <div id="dots" v-on:click="displayOrder">
+                <div v-bind:style="{ left: details.x + 'px', top: details.y + 'px'}">
+                  T
+                </div>
+            </div>
+          </div>
+
+          <button type="button" name="button" oninvalid="alert('You must fill out the form!');" v-on:click="addOrder">Place order! <br><img src="https://png.pngtree.com/png-vector/20190130/ourmid/pngtree-cute-minimalist-creative-cartoon-hamburger-png-image_611163.jpg" alt="" width="50"></button>
+        </section>
+        <p class="orderedItems" v-bind="orderlist">
+            {{orderlist}}
+        </p>
+        <footer id="footer">
+          <br>
+          <p>Tisen Burgers ©</p>
+          <p>Contact information: <a href="mailto:mathias0515@gmail.com">
+            mathias0515@gmail.com</a>.</p>
+        </footer>
+
+      </main>
     </body>
 </html>
